@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sejong Korean 1B · 50 câu kiểu đề gốc</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#f3f4f6;--paper:#fff;--text:#111827;--muted:#6b7280;--line:#d1d5db;--ok:#15803d;--bad:#b91c1c}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Helvetica Neue",Arial,sans-serif}
+header{position:sticky;top:0;z-index:20;background:rgba(243,244,246,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px}
+.top{max-width:900px;margin:auto}
+h1{font-size:20px;margin:0 0 5px}
+.sub{font-size:13px;color:var(--muted);line-height:1.45}
+.progress{font-size:13px;color:var(--muted);margin-top:7px}
+main{max-width:900px;margin:auto;padding:14px 12px 90px}
+.paper{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px 16px 8px}
+.qrow{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid #eef0f2}
+.qrow:last-child{border-bottom:0}
+.num{flex:0 0 32px;width:32px;font-weight:700;line-height:2}
+.sentence{flex:1;min-width:0;font-size:18px;line-height:2.05;word-break:keep-all}
+input{display:inline-block;width:min(47vw,220px);min-width:95px;border:0;border-bottom:2px solid #737b86;background:#fffef0;padding:4px 6px;margin:0 4px;font-size:18px;text-align:center;border-radius:4px 4px 0 0}
+input:focus{outline:2px solid #c7d2fe;outline-offset:1px}
+.result{flex:0 0 160px;font-size:13px;font-weight:700;padding-top:7px;text-align:right}
+.qrow.correct .result{color:var(--ok)} .qrow.wrong .result{color:var(--bad)}
+.qrow.correct input{background:#f0fdf4;border-bottom-color:var(--ok)} .qrow.wrong input{background:#fef2f2;border-bottom-color:var(--bad)}
+.summary{display:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-bottom:10px;font-weight:700}
+.actions{position:sticky;bottom:0;display:flex;gap:8px;background:rgba(243,244,246,.97);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom));margin-top:10px}
+.actions button{flex:1;min-height:46px;border:0;border-radius:12px;font-size:15px;font-weight:700}
+#grade{background:#111827;color:#fff} #reset{background:#e5e7eb;color:#111827}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:9px}
+@media(max-width:640px){
+  .qrow{display:block}
+  .num{display:inline-block}
+  .sentence{display:inline;font-size:17px}
+  input{font-size:17px;width:min(50vw,180px)}
+  .result{width:100%;text-align:left;padding:2px 0 0 38px}
+}
+</style>
+</head>
+<body>
+<header><div class="top">
+<h1>Sejong Korean 1B · 50 câu điền vào chỗ trống</h1>
+<div class="sub">Dạng bài giống đề Sejong đã học: điền từ/ngữ pháp vào giữa câu. Nhấn “Chấm điểm” để kiểm tra.</div>
+<div id="progress" class="progress">Đã làm: 0 / 50</div>
+</div></header>
+<main>
+<div id="summary" class="summary" aria-live="polite"></div>
+<div class="paper">
+    <div class="qrow" data-q="1">
+      <div class="num">1</div>
+      <div class="sentence">저는 주말에 보통 영화를 
+        <input id="q1" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 1">
+         책을 읽어요.
+      </div>
+      <div class="result" id="r1" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="2">
+      <div class="num">2</div>
+      <div class="sentence">저는 
+        <input id="q2" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 2">
+         여름 여행을 더 좋아해요.
+      </div>
+      <div class="result" id="r2" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="3">
+      <div class="num">3</div>
+      <div class="sentence">저는 김밥은 
+        <input id="q3" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 3">
+         떡볶이는 안 좋아해요.
+      </div>
+      <div class="result" id="r3" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="4">
+      <div class="num">4</div>
+      <div class="sentence">부산으로 여행을 갈 거예요. 바다에서 수영을 
+        <input id="q4" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 4">
+         낚시도 할 거예요.
+      </div>
+      <div class="result" id="r4" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="5">
+      <div class="num">5</div>
+      <div class="sentence">아침에 
+        <input id="q5" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 5">
+         제일 먼저 물을 마셔요.
+      </div>
+      <div class="result" id="r5" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="6">
+      <div class="num">6</div>
+      <div class="sentence">오늘은 머리가 
+        <input id="q6" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 6">
+         운동을 못 해요. 집에서 쉴 거예요.
+      </div>
+      <div class="result" id="r6" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="7">
+      <div class="num">7</div>
+      <div class="sentence">학교까지 조금 멀어서 
+        <input id="q7" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 7">
+        .
+      </div>
+      <div class="result" id="r7" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="8">
+      <div class="num">8</div>
+      <div class="sentence">정장이 없어요. 내일 백화점에 정장을 
+        <input id="q8" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 8">
+        .
+      </div>
+      <div class="result" id="r8" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="9">
+      <div class="num">9</div>
+      <div class="sentence">안나 씨의 생일이에요. 안나 씨 
+        <input id="q9" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 9">
+         선물을 줘요.
+      </div>
+      <div class="result" id="r9" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="10">
+      <div class="num">10</div>
+      <div class="sentence">요즘 한국어를 
+        <input id="q10" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 10">
+        . 그래서 한국어를 말할 수 있어요.
+      </div>
+      <div class="result" id="r10" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="11">
+      <div class="num">11</div>
+      <div class="sentence">한국에 요즘 비가 자주 
+        <input id="q11" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 11">
+         우산을 준비하세요.
+      </div>
+      <div class="result" id="r11" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="12">
+      <div class="num">12</div>
+      <div class="sentence">이번 휴가에 여행을 가요. 여행을 가서 친구들하고 같이 
+        <input id="q12" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 12">
+        .
+      </div>
+      <div class="result" id="r12" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="13">
+      <div class="num">13</div>
+      <div class="sentence">기타를 안 배웠어요. 기타를 치고 싶지만 기타를 
+        <input id="q13" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 13">
+        .
+      </div>
+      <div class="result" id="r13" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="14">
+      <div class="num">14</div>
+      <div class="sentence">유진 씨가 고기는 
+        <input id="q14" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 14">
+         채소는 아주 잘 먹어요.
+      </div>
+      <div class="result" id="r14" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="15">
+      <div class="num">15</div>
+      <div class="sentence">내일 일찍 일어나고 싶어요. 그래서 오늘 밤에 
+        <input id="q15" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 15">
+        .
+      </div>
+      <div class="result" id="r15" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="16">
+      <div class="num">16</div>
+      <div class="sentence">어제 도서관에 갔어요. 도서관에서 책을 빌려서 
+        <input id="q16" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 16">
+        .
+      </div>
+      <div class="result" id="r16" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="17">
+      <div class="num">17</div>
+      <div class="sentence">선생님이 학생 
+        <input id="q17" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 17">
+         한국어를 가르쳐요.
+      </div>
+      <div class="result" id="r17" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="18">
+      <div class="num">18</div>
+      <div class="sentence">유진 씨는 어제부터 배가 계속 아팠어요. 오늘은 
+        <input id="q18" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 18">
+        .
+      </div>
+      <div class="result" id="r18" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="19">
+      <div class="num">19</div>
+      <div class="sentence">어제 마리 씨가 바빠서 모임에 
+        <input id="q19" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 19">
+        .
+      </div>
+      <div class="result" id="r19" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="20">
+      <div class="num">20</div>
+      <div class="sentence">안나 씨가 화장품을 
+        <input id="q20" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 20">
+         안나 씨에게 화장품을 줄 거예요.
+      </div>
+      <div class="result" id="r20" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="21">
+      <div class="num">21</div>
+      <div class="sentence">회사가 가까워서 
+        <input id="q21" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 21">
+        .
+      </div>
+      <div class="result" id="r21" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="22">
+      <div class="num">22</div>
+      <div class="sentence">약을 
+        <input id="q22" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 22">
+         배가 계속 아파요.
+      </div>
+      <div class="result" id="r22" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="23">
+      <div class="num">23</div>
+      <div class="sentence">저녁에 집에 
+        <input id="q23" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 23">
+         밥을 먹을 거예요.
+      </div>
+      <div class="result" id="r23" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="24">
+      <div class="num">24</div>
+      <div class="sentence">열이 
+        <input id="q24" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 24">
+         기침을 했어요.
+      </div>
+      <div class="result" id="r24" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="25">
+      <div class="num">25</div>
+      <div class="sentence">누리식당이 싸고 
+        <input id="q25" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 25">
+         거기로 가세요.
+      </div>
+      <div class="result" id="r25" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="26">
+      <div class="num">26</div>
+      <div class="sentence">친구를 
+        <input id="q26" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 26">
+         같이 영화관에 갔어요.
+      </div>
+      <div class="result" id="r26" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="27">
+      <div class="num">27</div>
+      <div class="sentence">요즘 수영 
+        <input id="q27" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 27">
+        . 그래서 수영을 할 수 있어요.
+      </div>
+      <div class="result" id="r27" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="28">
+      <div class="num">28</div>
+      <div class="sentence">지금 회의를 해서 전화를 
+        <input id="q28" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 28">
+        .
+      </div>
+      <div class="result" id="r28" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="29">
+      <div class="num">29</div>
+      <div class="sentence">요즘 한국 날씨가 
+        <input id="q29" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 29">
+         옷을 많이 입으세요.
+      </div>
+      <div class="result" id="r29" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="30">
+      <div class="num">30</div>
+      <div class="sentence">집에 과일이 없어서 마트에 과일을 
+        <input id="q30" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 30">
+        .
+      </div>
+      <div class="result" id="r30" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="31">
+      <div class="num">31</div>
+      <div class="sentence">돈을 
+        <input id="q31" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 31">
+         은행에 가요.
+      </div>
+      <div class="result" id="r31" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="32">
+      <div class="num">32</div>
+      <div class="sentence">매일 
+        <input id="q32" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 32">
+         집 근처 수영장에 가요.
+      </div>
+      <div class="result" id="r32" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="33">
+      <div class="num">33</div>
+      <div class="sentence">저는 책을 좋아해요. 그래서 
+        <input id="q33" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 33">
+         도서관에 자주 가요.
+      </div>
+      <div class="result" id="r33" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="34">
+      <div class="num">34</div>
+      <div class="sentence">저는 큰 가방이 없어요. 주말에 쇼핑몰에서 큰 가방을 
+        <input id="q34" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 34">
+        .
+      </div>
+      <div class="result" id="r34" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="35">
+      <div class="num">35</div>
+      <div class="sentence">저는 매운 떡볶이를 
+        <input id="q35" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 35">
+         떡볶이를 자주 먹어요.
+      </div>
+      <div class="result" id="r35" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="36">
+      <div class="num">36</div>
+      <div class="sentence">책을 
+        <input id="q36" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 36">
+         책을 자주 읽어요.
+      </div>
+      <div class="result" id="r36" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="37">
+      <div class="num">37</div>
+      <div class="sentence">주차장이 건물 지하에 있어요. 지하로 
+        <input id="q37" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 37">
+        .
+      </div>
+      <div class="result" id="r37" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="38">
+      <div class="num">38</div>
+      <div class="sentence">편의점이 밖에 있어요. 밖으로 
+        <input id="q38" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 38">
+        .
+      </div>
+      <div class="result" id="r38" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="39">
+      <div class="num">39</div>
+      <div class="sentence">집에서 학교까지 
+        <input id="q39" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 39">
+         버스를 타고 가야 돼요.
+      </div>
+      <div class="result" id="r39" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="40">
+      <div class="num">40</div>
+      <div class="sentence">여기에서 집까지 
+        <input id="q40" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 40">
+        . 그래서 걸어서 가요.
+      </div>
+      <div class="result" id="r40" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="41">
+      <div class="num">41</div>
+      <div class="sentence">밥을 
+        <input id="q41" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 41">
+         이를 닦아요.
+      </div>
+      <div class="result" id="r41" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="42">
+      <div class="num">42</div>
+      <div class="sentence">저는 큰 가방보다 
+        <input id="q42" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 42">
+         더 좋아해요.
+      </div>
+      <div class="result" id="r42" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="43">
+      <div class="num">43</div>
+      <div class="sentence">어제는 비가 
+        <input id="q43" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 43">
+         오늘은 맑아요.
+      </div>
+      <div class="result" id="r43" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="44">
+      <div class="num">44</div>
+      <div class="sentence">감기에 걸렸어요. 병원에 
+        <input id="q44" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 44">
+        .
+      </div>
+      <div class="result" id="r44" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="45">
+      <div class="num">45</div>
+      <div class="sentence">요즘 중국 요리를 배우고 있어요. 그래서 중국 음식을 
+        <input id="q45" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 45">
+        .
+      </div>
+      <div class="result" id="r45" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="46">
+      <div class="num">46</div>
+      <div class="sentence">저는 어제 친구를 
+        <input id="q46" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 46">
+         같이 영화를 봤어요.
+      </div>
+      <div class="result" id="r46" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="47">
+      <div class="num">47</div>
+      <div class="sentence">학교에 
+        <input id="q47" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 47">
+         한국어를 배워요.
+      </div>
+      <div class="result" id="r47" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="48">
+      <div class="num">48</div>
+      <div class="sentence">저는 수영을 안 배웠어요. 수영을 하고 싶지만 
+        <input id="q48" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 48">
+        .
+      </div>
+      <div class="result" id="r48" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="49">
+      <div class="num">49</div>
+      <div class="sentence">이번 여행은 
+        <input id="q49" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 49">
+         더 좋았어요.
+      </div>
+      <div class="result" id="r49" aria-live="polite"></div>
+    </div>
+    <div class="qrow" data-q="50">
+      <div class="num">50</div>
+      <div class="sentence">이 식당은 음식이 
+        <input id="q50" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Câu 50">
+         가격도 싸요.
+      </div>
+      <div class="result" id="r50" aria-live="polite"></div>
+    </div></div>
+<div class="actions">
+  <button id="grade" type="button">Chấm điểm</button>
+  <button id="reset" type="button">Làm lại</button>
+</div>
+<div class="note">Câu trả lời được lưu tự động trên trình duyệt của điện thoại này. Một số câu chấp nhận nhiều cách trả lời đúng tương đương.</div>
+</main>
+<script>
+const ANSWERS={"1": ["보고"], "2": ["봄보다"], "3": ["좋아하지만"], "4": ["하고"], "5": ["일어난 후에"], "6": ["아파서"], "7": ["택시를 타고 가요", "택시를 타고 갈 거예요"], "8": ["사러 갈 거예요", "살 거예요"], "9": ["에게"], "10": ["배우고 있어요"], "11": ["오니까", "오기 때문에", "와서"], "12": ["수영을 해요", "수영할 거예요"], "13": ["칠 수 없어요"], "14": ["안 먹지만", "안 좋아하지만"], "15": ["일찍 자야 돼요"], "16": ["읽었어요"], "17": ["에게"], "18": ["약을 먹어야 돼요"], "19": ["못 갔어요"], "20": ["좋아해서"], "21": ["걸어서 가요"], "22": ["먹었지만"], "23": ["가서"], "24": ["나고"], "25": ["맛있으니까", "맛있어서"], "26": ["만나서"], "27": ["배우고 있어요"], "28": ["받을 수 없어요"], "29": ["추우니까", "추워서"], "30": ["사러 갈 거예요", "사러 가요"], "31": ["찾으러"], "32": ["수영하러"], "33": ["읽으러"], "34": ["살 거예요"], "35": ["좋아해서"], "36": ["좋아해서"], "37": ["내려가세요"], "38": ["나가세요", "나가요"], "39": ["멀어서"], "40": ["가까워요"], "41": ["먹은 후에"], "42": ["작은 가방을"], "43": ["왔지만"], "44": ["가야 돼요"], "45": ["만들 수 있어요"], "46": ["만나서"], "47": ["가서"], "48": ["할 수 없어요"], "49": ["지난 여행보다"], "50": ["맛있고"]};
+const norm=s=>s.trim().replace(/\s+/g,' ').replace(/[.!?。！？]+$/g,'');
+function save(i,v){try{localStorage.setItem('sejong-original50-'+i,v)}catch(e){}}
+function load(i){try{return localStorage.getItem('sejong-original50-'+i)||''}catch(e){return ''}}
+function updateProgress(){
+  let done=0;
+  for(let i=1;i<=50;i++) if(document.getElementById('q'+i).value.trim()) done++;
+  document.getElementById('progress').textContent='Đã làm: '+done+' / 50';
+}
+for(let i=1;i<=50;i++){
+  const inp=document.getElementById('q'+i);
+  inp.value=load(i);
+  inp.addEventListener('input',()=>{save(i,inp.value);updateProgress();});
+}
+updateProgress();
+
+document.getElementById('grade').addEventListener('click',()=>{
+  let score=0,done=0;
+  for(let i=1;i<=50;i++){
+    const inp=document.getElementById('q'+i);
+    const row=inp.closest('.qrow');
+    const res=document.getElementById('r'+i);
+    row.classList.remove('correct','wrong');
+    const val=norm(inp.value);
+    if(val) done++;
+    const ok=ANSWERS[String(i)].some(a=>norm(a)===val);
+    if(ok){
+      score++; row.classList.add('correct'); res.textContent='✓ Đúng';
+    } else {
+      row.classList.add('wrong'); res.textContent='✗ Sai · Đáp án: '+ANSWERS[String(i)][0];
+    }
+  }
+  const s=document.getElementById('summary');
+  s.style.display='block';
+  s.textContent='Kết quả: '+score+' / 50 câu đúng · Đã trả lời: '+done+'/50';
+  s.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+
+document.getElementById('reset').addEventListener('click',()=>{
+  if(!confirm('Bạn có muốn xóa toàn bộ câu trả lời và làm lại không?')) return;
+  for(let i=1;i<=50;i++){
+    const inp=document.getElementById('q'+i);
+    inp.value=''; save(i,'');
+    inp.closest('.qrow').classList.remove('correct','wrong');
+    document.getElementById('r'+i).textContent='';
+  }
+  document.getElementById('summary').style.display='none';
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
+</body>
+</html>
