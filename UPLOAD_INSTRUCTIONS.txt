@@ -1,0 +1,18 @@
+세종한국어 1B MP3 듣기평가 (1과~4과)
+
+구성
+- sejong1b_full_mp3_listening.html
+- 원본 MP3 20개 (줄이거나 자르지 않음)
+
+GitHub 업로드 방법
+1. 이 폴더 안의 파일 21개를 모두 선택합니다.
+2. godstol1-svg/sejong-korean-study 저장소에서 Add file → Upload files를 누릅니다.
+3. 파일 21개를 저장소의 최상위(root)에 함께 올립니다.
+4. Commit changes를 누릅니다.
+
+바로가기 주소
+https://godstol1-svg.github.io/sejong-korean-study/sejong1b_full_mp3_listening.html
+
+중요
+- HTML과 MP3 파일을 반드시 같은 위치에 올려야 합니다.
+- SJ_W_1B_03_1(1).mp3 파일명도 바꾸지 마세요.
