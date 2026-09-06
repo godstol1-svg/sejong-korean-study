@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#ffffff" />
-  <title>세종한국어 1B 객관식 퀴즈</title>
+  <title>Trắc nghiệm Sejong Korean 1B</title>
   <style>
 :root{
   --bg:#f5f7fb;
@@ -129,38 +129,38 @@ footer{padding:18px 4px 0;text-align:center;color:var(--muted);font-size:12px}
     <header class="hero">
       <div>
         <p class="eyebrow">SEJONG KOREAN 1B</p>
-        <h1>1과~12과 객관식 퀴즈</h1>
-        <p class="sub">교재 핵심 문법·단어·표현을 과별 10문제씩 연습하세요.</p>
+        <h1>Trắc nghiệm Bài 1 ~ Bài 12</h1>
+        <p class="sub">Mỗi bài có 10 câu để luyện ngữ pháp, từ vựng và cách diễn đạt quan trọng.</p>
       </div>
       <div class="hero-badge">
         <strong id="totalQuestions">120</strong>
-        <span>총 문제</span>
+        <span>Tổng câu</span>
       </div>
     </header>
 
     <section id="homeView" class="panel">
       <div class="section-head">
         <div>
-          <h2>과를 선택하세요</h2>
-          <p>정답을 고르면 즉시 결과와 해설을 확인할 수 있습니다.</p>
+          <h2>Chọn bài học</h2>
+          <p>Chọn đáp án để xem đúng/sai ngay lập tức.</p>
         </div>
-        <button id="resetProgressBtn" class="btn btn-ghost" type="button">진도 초기화</button>
+        <button id="resetProgressBtn" class="btn btn-ghost" type="button">Xóa tiến độ</button>
       </div>
 
       <div id="lessonGrid" class="lesson-grid"></div>
 
       <div class="all-review">
         <div>
-          <strong>전체 복습</strong>
-          <span>1~12과 문제를 섞어서 풀기</span>
+          <strong>Ôn tập toàn bộ</strong>
+          <span>Làm ngẫu nhiên câu hỏi từ Bài 1 đến Bài 12</span>
         </div>
-        <button id="startAllBtn" class="btn btn-primary" type="button">전체 복습 시작</button>
+        <button id="startAllBtn" class="btn btn-primary" type="button">Bắt đầu ôn tập</button>
       </div>
     </section>
 
     <section id="quizView" class="panel hidden">
       <div class="quiz-top">
-        <button id="backBtn" class="btn btn-ghost" type="button">← 과 선택</button>
+        <button id="backBtn" class="btn btn-ghost" type="button">← Chọn bài</button>
         <div class="progress-meta">
           <span id="quizTitle"></span>
           <span id="progressText"></span>
@@ -182,29 +182,29 @@ footer{padding:18px 4px 0;text-align:center;color:var(--muted);font-size:12px}
         </div>
 
         <div class="question-actions">
-          <button id="nextBtn" class="btn btn-primary" type="button" disabled>다음 문제</button>
+          <button id="nextBtn" class="btn btn-primary" type="button" disabled>Câu tiếp theo</button>
         </div>
       </article>
     </section>
 
     <section id="resultView" class="panel hidden">
       <div class="result-card">
-        <p class="eyebrow">RESULT</p>
-        <h2 id="resultTitle">결과</h2>
+        <p class="eyebrow">KẾT QUẢ</p>
+        <h2 id="resultTitle">Kết quả</h2>
         <div class="score-ring">
           <strong id="scoreText"></strong>
           <span id="scorePercent"></span>
         </div>
         <p id="resultMessage"></p>
         <div class="result-actions">
-          <button id="retryBtn" class="btn btn-primary" type="button">다시 풀기</button>
-          <button id="resultHomeBtn" class="btn btn-ghost" type="button">과 선택으로</button>
+          <button id="retryBtn" class="btn btn-primary" type="button">Làm lại</button>
+          <button id="resultHomeBtn" class="btn btn-ghost" type="button">Về chọn bài</button>
         </div>
       </div>
     </section>
 
     <footer>
-      <p>브라우저에 진도가 자동 저장됩니다. GitHub Pages에서 바로 실행할 수 있는 정적 웹앱입니다.</p>
+      <p>Tiến độ được tự động lưu trên trình duyệt. Có thể chạy trực tiếp bằng GitHub Pages.</p>
     </footer>
   </main>
 
@@ -216,8 +216,8 @@ window.QUIZ_DATA = {
   "lessons": [
     {
       "id": 1,
-      "title": "1과 · 음식과 좋아하는 것",
-      "topic": "무슨, 뭘, 못, -고 싶어요",
+      "title": "Bài 1 · Món ăn và sở thích",
+      "topic": "Từ để hỏi 무슨/뭘, 못, -고 싶어요",
       "questions": [
         {
           "question": "빈칸에 알맞은 말을 고르세요. “___ 음식을 좋아해요?”",
@@ -333,8 +333,8 @@ window.QUIZ_DATA = {
     },
     {
       "id": 2,
-      "title": "2과 · 취미와 하러 가기",
-      "topic": "빈도, -(으)러 가요, 도",
+      "title": "Bài 2 · Sở thích và đi để làm gì",
+      "topic": "Tần suất, -(으)러 가요, 도",
       "questions": [
         {
           "question": "“책을 읽___ 도서관에 가요.”에 알맞은 것은?",
@@ -450,8 +450,8 @@ window.QUIZ_DATA = {
     },
     {
       "id": 3,
-      "title": "3과 · 옷과 이유, 미래 계획",
-      "topic": "-아서/어서, -(으)ㄹ 거예요, 착용 동사",
+      "title": "Bài 3 · Quần áo, lý do và kế hoạch tương lai",
+      "topic": "-아서/어서, -(으)ㄹ 거예요, động từ mặc/đeo",
       "questions": [
         {
           "question": "“어제 늦게 자___ 오늘 피곤해요.”에 알맞은 것은?",
@@ -567,7 +567,7 @@ window.QUIZ_DATA = {
     },
     {
       "id": 4,
-      "title": "4과 · 상태와 특징, 격식체",
+      "title": "Bài 4 · Trạng thái, đặc điểm và kính ngữ trang trọng",
       "topic": "A-(으)ㄴ N, -습니다/-습니까?",
       "questions": [
         {
@@ -684,8 +684,8 @@ window.QUIZ_DATA = {
     },
     {
       "id": 5,
-      "title": "5과 · 방향과 이동, 의문사",
-      "topic": "어떻게, N-(으)로, 방향·의문사",
+      "title": "Bài 5 · Phương hướng, di chuyển và từ để hỏi",
+      "topic": "어떻게, N-(으)로, phương hướng và từ để hỏi",
       "questions": [
         {
           "question": "2층으로 가려면 알맞은 표현은?",
@@ -801,7 +801,7 @@ window.QUIZ_DATA = {
     },
     {
       "id": 6,
-      "title": "6과 · 교통수단과 제안",
+      "title": "Bài 6 · Phương tiện giao thông và đề nghị",
       "topic": "N에서 N까지, 타고 가다, 갈아타다, -아요/어요",
       "questions": [
         {
@@ -918,7 +918,7 @@ window.QUIZ_DATA = {
     },
     {
       "id": 7,
-      "title": "7과 · 여행 계획과 준비",
+      "title": "Bài 7 · Kế hoạch và chuẩn bị du lịch",
       "topic": "V-(으)려고 해요, -고",
       "questions": [
         {
@@ -1035,7 +1035,7 @@ window.QUIZ_DATA = {
     },
     {
       "id": 8,
-      "title": "8과 · 여행 경험과 행동 순서",
+      "title": "Bài 8 · Trải nghiệm du lịch và thứ tự hành động",
       "topic": "V-(으)ㄴ 후에, N보다",
       "questions": [
         {
@@ -1152,7 +1152,7 @@ window.QUIZ_DATA = {
     },
     {
       "id": 9,
-      "title": "9과 · 신체와 증상",
+      "title": "Bài 9 · Cơ thể và triệu chứng",
       "topic": "-지만, -아야/어야 돼요",
       "questions": [
         {
@@ -1269,7 +1269,7 @@ window.QUIZ_DATA = {
     },
     {
       "id": 10,
-      "title": "10과 · 건강한 생활",
+      "title": "Bài 10 · Cuộc sống lành mạnh",
       "topic": "잘 못/잘 안, V-기 전에, -아서/어서",
       "questions": [
         {
@@ -1386,8 +1386,8 @@ window.QUIZ_DATA = {
     },
     {
       "id": 11,
-      "title": "11과 · 반 모임과 할 수 있는 일",
-      "topic": "모임 준비, -(으)ㄹ 수 있어요/없어요, -고 있어요",
+      "title": "Bài 11 · Họp lớp và những việc có thể làm",
+      "topic": "Chuẩn bị buổi họp, -(으)ㄹ 수 있어요/없어요, -고 있어요",
       "questions": [
         {
           "question": "반 모임을 준비할 때 먼저 할 수 있는 일로 교재에 나온 것은?",
@@ -1503,7 +1503,7 @@ window.QUIZ_DATA = {
     },
     {
       "id": 12,
-      "title": "12과 · 선물 주고받기",
+      "title": "Bài 12 · Tặng và nhận quà",
       "topic": "에게/한테, V/A-(으)니까",
       "questions": [
         {
@@ -1687,10 +1687,10 @@ window.QUIZ_DATA = {
       card.className = "lesson-card";
       card.type = "button";
       card.innerHTML = `
-        <span class="num">${lesson.id}과</span>
-        <h3>${lesson.title.replace(/^\d+과 · /, "")}</h3>
+        <span class="num">Bài ${lesson.id}</span>
+        <h3>${lesson.title.replace(/^Bài \d+ · /, "")}</h3>
         <p>${lesson.topic}</p>
-        <div class="saved">${saved ? `최근 점수 ${saved.score}/${saved.total}` : "10문제"}</div>
+        <div class="saved">${saved ? `Điểm gần nhất ${saved.score}/${saved.total}` : "10 câu"}</div>
       `;
       card.addEventListener("click", () => startLesson(lesson.id));
       lessonGrid.appendChild(card);
@@ -1726,7 +1726,7 @@ window.QUIZ_DATA = {
     );
     currentIndex = 0;
     score = 0;
-    quizTitle.textContent = "전체 복습 · 1과~12과";
+    quizTitle.textContent = "Ôn tập toàn bộ · Bài 1~12";
     setView("quiz");
     renderQuestion();
   }
@@ -1740,8 +1740,8 @@ window.QUIZ_DATA = {
     const item = currentQuestions[currentIndex];
     const total = currentQuestions.length;
     questionNumber.textContent = currentMode === "all" && item.lessonId
-      ? `${item.lessonId}과 · 문제 ${currentIndex + 1}`
-      : `문제 ${currentIndex + 1}`;
+      ? `Bài ${item.lessonId} · Câu ${currentIndex + 1}`
+      : `Câu ${currentIndex + 1}`;
     questionText.textContent = item.question;
     progressText.textContent = `${currentIndex + 1} / ${total}`;
     progressBar.style.width = `${((currentIndex + 1) / total) * 100}%`;
@@ -1755,7 +1755,7 @@ window.QUIZ_DATA = {
       choices.appendChild(btn);
     });
 
-    nextBtn.textContent = currentIndex === total - 1 ? "결과 보기" : "다음 문제";
+    nextBtn.textContent = currentIndex === total - 1 ? "결과 보기" : "Câu tiếp theo";
   }
 
   function chooseAnswer(index, clickedButton) {
@@ -1775,8 +1775,8 @@ window.QUIZ_DATA = {
 
     feedback.classList.remove("hidden");
     feedback.classList.add(correct ? "good" : "bad");
-    feedbackTitle.textContent = correct ? "정답입니다!" : `정답은 ${item.answer + 1}번입니다.`;
-    feedbackText.textContent = item.explanation;
+    feedbackTitle.textContent = correct ? "Chính xác!" : `Đáp án đúng là số ${item.answer + 1}.`; 
+    feedbackText.textContent = `Đáp án đúng: ${item.answer + 1}. ${item.choices[item.answer]} · ${item.explanation}`;
     nextBtn.disabled = false;
   }
 
@@ -1794,15 +1794,15 @@ window.QUIZ_DATA = {
     const total = currentQuestions.length;
     const pct = Math.round((score / total) * 100);
     scoreText.textContent = `${score} / ${total}`;
-    scorePercent.textContent = `${pct}점`;
+    scorePercent.textContent = `${pct} điểm`;
     resultTitle.textContent = currentMode === "lesson"
-      ? `${currentLessonId}과 완료`
-      : "전체 복습 완료";
+      ? `Hoàn thành Bài ${currentLessonId}`
+      : "Hoàn thành ôn tập toàn bộ";
 
-    if (pct >= 90) resultMessage.textContent = "아주 잘했어요. 핵심 표현을 거의 정확하게 익혔습니다.";
-    else if (pct >= 70) resultMessage.textContent = "잘했어요. 틀린 문제의 해설을 다시 확인하면 더 좋아집니다.";
-    else if (pct >= 50) resultMessage.textContent = "조금만 더 복습해 보세요. 같은 과를 다시 풀면 금방 익숙해집니다.";
-    else resultMessage.textContent = "교재의 핵심 문법과 단어를 한 번 더 보고 다시 도전해 보세요.";
+    if (pct >= 90) resultMessage.textContent = "Rất tốt! Bạn đã nắm được hầu hết các nội dung chính.";
+    else if (pct >= 70) resultMessage.textContent = "Làm tốt lắm. Hãy xem lại những câu sai để nhớ chắc hơn.";
+    else if (pct >= 50) resultMessage.textContent = "Hãy ôn thêm một chút. Làm lại bài này sẽ giúp bạn quen nhanh hơn.";
+    else resultMessage.textContent = "Hãy xem lại ngữ pháp và từ vựng chính rồi thử lại nhé.";
 
     if (currentMode === "lesson") {
       saveProgress("lesson-" + currentLessonId, {
@@ -1826,7 +1826,7 @@ window.QUIZ_DATA = {
     else startAll();
   });
   $("resetProgressBtn").addEventListener("click", () => {
-    if (confirm("저장된 점수를 모두 초기화할까요?")) {
+    if (confirm("Bạn có muốn xóa toàn bộ điểm đã lưu không?")) {
       localStorage.removeItem(storageKey);
       renderLessons();
     }
