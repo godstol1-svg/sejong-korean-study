@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문장 완성 연습 1~51</title>
+<style>
+:root {
+  --bg:#f6f7fb; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+  --line:#dbe1ea; --ok:#e8f7ee; --bad:#fff0f0; --accent:#315efb;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:22px 16px 72px}
+.header{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 4px 18px rgba(0,0,0,.04)}
+h1{margin:0 0 6px;font-size:28px}
+.sub{color:var(--muted);font-size:14px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.progress{margin-top:14px;font-size:14px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0}
+.num{font-weight:800;margin-right:6px}
+.qtext{font-size:18px}
+.answer{display:inline-block;min-width:180px;max-width:100%;vertical-align:middle;margin:3px 4px}
+input[type=text]{width:100%;border:0;border-bottom:2px solid #8b98aa;background:#fafbfc;padding:7px 9px;font-size:17px;outline:none;border-radius:7px 7px 0 0}
+.card.correct{background:var(--ok);border-color:#9bd6ad}
+.card.wrong{background:var(--bad);border-color:#efaaaa}
+.feedback{font-size:13px;margin-top:8px;display:none}
+.card.correct .feedback,.card.wrong .feedback{display:block}
+.score{font-size:18px;font-weight:800;margin-left:auto;align-self:center}
+.section-title{margin:24px 4px 8px;font-size:17px;color:#4b5563}
+.notice{font-size:13px;color:var(--muted);margin-top:10px}
+@media(max-width:600px){
+  h1{font-size:23px}
+  .qtext{font-size:16px}
+  .answer{display:block;margin:8px 0 2px;min-width:100%}
+  .toolbar button{flex:1 1 46%}
+}
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .toolbar,.progress,.score,.notice{display:none!important}
+  .header{box-shadow:none;border:0;padding:0 0 10px}
+  .card{break-inside:avoid;border:0;border-bottom:1px solid #ddd;border-radius:0;margin:0;padding:10px 0}
+  input[type=text]{background:#fff;border-bottom:1px solid #000}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>문장 완성 연습 1~51</h1>
+    <div class="sub">Hoàn thành câu · 손글씨는 제외하고 인쇄된 문제만 다시 구성했습니다.</div>
+    <div class="toolbar">
+      <button class="primary" onclick="gradeAll()">정답 확인 / Kiểm tra</button>
+      <button onclick="showAnswers()">정답 보기 / Xem đáp án</button>
+      <button onclick="resetAll()">다시 풀기 / Làm lại</button>
+      <button onclick="window.print()">인쇄 / In</button>
+      <div class="score" id="score"></div>
+    </div>
+    <div class="progress" id="progress"></div>
+    <div class="notice">※ 같은 뜻의 자연스러운 표현이 여러 개 가능한 문장은 대표 정답을 기준으로 채점합니다.</div>
+  </div>
+  <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+{text:"친구를 (      ) 같이 쇼핑하러 가요.", answer:"만나서", accepted:["만나서"]},
+{text:"약을 (      ) 목이 많이 아프고 콧물도 많이 났어요.", answer:"먹었지만", accepted:["먹었지만"]},
+{text:"주말에 보통 드라마를 (      ) 청소해요.", answer:"보고", accepted:["보고"]},
+{text:"아침에 (      ) 요가를 하고 조깅도 해요.", answer:"일어나서", accepted:["일어나서"]},
+{text:"기침을 (      ) 열이 났어요.", answer:"하고", accepted:["하고"]},
+{text:"선생님이 학생 (      ) 한국어를 가르쳐요.", answer:"에게", accepted:["에게"]},
+{text:"우체국까지 (      ) 걸어서 가세요.", answer:"가까우니까", accepted:["가까우니까"]},
+{text:"저녁을 먹고 공원에 (      ) 산책을 해요.", answer:"가서", accepted:["가서"]},
+{text:"약을 (      ) 계속 잠이 와요.", answer:"먹어서", accepted:["먹어서"]},
+{text:"집에서 학교까지 좀 멀어요. 그래서 (      ).", answer:"버스를 타고 가요", accepted:["버스를 타고 가요", "버스로 가요"]},
+{text:"오늘은 머리가 (      ) 운동을 못 해요. 집에서 쉴 거예요.", answer:"아파서", accepted:["아파서"]},
+{text:"머리가 길어서 미용실에 머리를 (      ).", answer:"자르러 가요", accepted:["자르러 가요"]},
+{text:"팔을 다쳐서 농구를 (      ).", answer:"못 해요", accepted:["못 해요", "할 수 없어요"]},
+{text:"요즘 한국어를 (      ). 그래서 한국어를 말할 수 있어요.", answer:"배우고 있어요", accepted:["배우고 있어요"]},
+{text:"저는 (      ) 여름 여행을 더 좋아해요.", answer:"봄 여행보다", accepted:["봄 여행보다"]},
+{text:"시장에 (      ) 생선 요리를 먹었어요.", answer:"가서", accepted:["가서"]},
+{text:"안나 씨의 생일이에요. 안나 씨(      ) 선물을 줘요.", answer:"에게", accepted:["에게"]},
+{text:"어제 도서관에 갔어요. 도서관에서 책을 빌려서 (      ).", answer:"읽었어요", accepted:["읽었어요"]},
+{text:"정장을 (      ) 친구 결혼식에 갔어요.", answer:"입고", accepted:["입고"]},
+{text:"한국에 요즘 비가 자주 (      ) 우산을 준비하세요.", answer:"오니까", accepted:["오니까"]},
+{text:"집에서 세종학당까지 안 멀어요. 그래서 (      ) 5분쯤 걸려요.", answer:"걸어서", accepted:["걸어서"]},
+{text:"이번 휴가에 여행을 가요. 여행을 가서 친구들하고 같이 (      ).", answer:"수영할 거예요", accepted:["수영할 거예요"]},
+{text:"유진 씨가 고기는 안 (      ) 채소는 아주 잘 먹어요.", answer:"먹지만", accepted:["먹지만"]},
+{text:"유진 씨는 어제부터 배가 계속 아팠어요. 오늘은 (      ).", answer:"병원에 갈 거예요", accepted:["병원에 갈 거예요"]},
+{text:"수영복이 없어요. 그래서 내일 백화점에 수영복을 (      ).", answer:"사러 갈 거예요", accepted:["사러 갈 거예요"]},
+{text:"요즘 한국 요리를 배우고 있어요. 그래서 한국 음식을 (      ).", answer:"만들 수 있어요", accepted:["만들 수 있어요"]},
+{text:"누리식당이 싸고 (      ) 거기로 가세요.", answer:"맛있으니까", accepted:["맛있으니까"]},
+{text:"서울로 여행을 갈 거예요. 경복궁에서 한복을 (      ) 사진도 찍을 거예요.", answer:"입고", accepted:["입고"]},
+{text:"눈이 많이 아파서 약을 샀어요. 하루에 세 번 (      ).", answer:"약을 먹어야 돼요", accepted:["약을 먹어야 돼요", "먹어야 돼요"]},
+{text:"피아노를 안 배웠어요. 피아노를 치고 싶지만 피아노를 (      ).", answer:"칠 수 없어요", accepted:["칠 수 없어요", "못 쳐요"]},
+{text:"운동화를 (      ) 공원에 운동하러 가요.", answer:"신고", accepted:["신고"]},
+{text:"저는 고기는 (      ) 생선은 안 좋아해요.", answer:"좋아하지만", accepted:["좋아하지만"]},
+{text:"수영을 하고 학교에 (      ) 아침을 먹어요.", answer:"가서", accepted:["가서"]},
+{text:"안나 씨가 친구(      ) 메시지를 보냈어요.", answer:"에게", accepted:["에게"]},
+{text:"회사가 가까워서 (      ).", answer:"걸어서 가요", accepted:["걸어서 가요"]},
+{text:"아침에 김밥을 (      ) 먹었어요.", answer:"만들어서", accepted:["만들어서"]},
+{text:"지금 회의를 해서 전화를 (      ).", answer:"받을 수 없어요", accepted:["받을 수 없어요", "못 받아요"]},
+{text:"호텔까지 (      ) 택시를 타고 가세요.", answer:"머니까", accepted:["머니까"]},
+{text:"몸이 어제보다 좋아요. 기침은 좀 (      ) 이제 열은 안 나요.", answer:"하지만", accepted:["하지만"]},
+{text:"요즘 수영을 (      ). 그래서 수영을 할 수 있어요.", answer:"배우고 있어요", accepted:["배우고 있어요"]},
+{text:"등산화가 (      ) 오늘 등산화를 살 거예요.", answer:"없어서", accepted:["없어서"]},
+{text:"어제는 비가 (      ) 오늘은 비가 안 와요.", answer:"왔지만", accepted:["왔지만"]},
+{text:"저녁에 집에 (      ) 밥을 먹을 거예요.", answer:"가서", accepted:["가서"]},
+{text:"안나 씨가 꽃을 (      ) 안나 씨에게 꽃을 주었어요.", answer:"좋아해서", accepted:["좋아해서"]},
+{text:"어제 마리 씨가 바빠서 파티에 (      ).", answer:"못 갔어요", accepted:["못 갔어요", "가지 못했어요"]},
+{text:"내일 일찍 일어나고 싶어요. 그래서 오늘 밤에 (      ).", answer:"일찍 잠을 자요", accepted:["일찍 잠을 자요", "일찍 자요"]},
+{text:"요즘 한국 날씨가 (      ) 옷을 많이 입으세요.", answer:"추우니까", accepted:["추우니까"]},
+{text:"안나 씨가 인형을 모으니까 안나 씨에게 (      ) 선물하세요.", answer:"인형을", accepted:["인형을"]},
+{text:"이 식당은 음식이 (      ) 자주 와요.", answer:"맛있어서", accepted:["맛있어서"]},
+{text:"인천공항에서 지하철을 (      ) 서울로 갔어요.", answer:"타고", accepted:["타고"]},
+{text:"친구가 축구를 (      ) 친구한테 운동화를 주었어요.", answer:"좋아해서", accepted:["좋아해서"]}
+];
+
+const storageKey = "sentence_completion_1_51_v1";
+
+function norm(s) {
+  return (s || "")
+    .trim()
+    .replace(/[.。!?！？]/g,"")
+    .replace(/\s+/g,"")
+    .toLowerCase();
+}
+
+function render() {
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = "";
+  const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  let section = 0;
+
+  questions.forEach((q, i) => {
+    if (i === 0 || i === 11 || i === 31) {
+      section++;
+      const st = document.createElement("div");
+      st.className = "section-title";
+      st.textContent = section === 1 ? "1~11번" : section === 2 ? "12~31번" : "32~51번";
+      quiz.appendChild(st);
+    }
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.id = "card-"+i;
+
+    const parts = q.text.split("(      )");
+    const qtext = document.createElement("div");
+    qtext.className = "qtext";
+
+    const num = document.createElement("span");
+    num.className = "num";
+    num.textContent = (i+1) + ".";
+    qtext.appendChild(num);
+
+    qtext.appendChild(document.createTextNode(parts[0]));
+
+    const aw = document.createElement("span");
+    aw.className = "answer";
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = "a-"+i;
+    input.autocomplete = "off";
+    input.spellcheck = false;
+    input.value = saved[i] || "";
+    input.setAttribute("aria-label", (i+1)+"번 답");
+    input.addEventListener("input", saveProgress);
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") gradeOne(i);
+    });
+    aw.appendChild(input);
+    qtext.appendChild(aw);
+
+    qtext.appendChild(document.createTextNode(parts[1] || ""));
+    card.appendChild(qtext);
+
+    const fb = document.createElement("div");
+    fb.className = "feedback";
+    fb.id = "fb-"+i;
+    card.appendChild(fb);
+
+    quiz.appendChild(card);
+  });
+  updateProgress();
+}
+
+function saveProgress() {
+  const data = {};
+  questions.forEach((_, i) => {
+    const el = document.getElementById("a-"+i);
+    if (el && el.value) data[i] = el.value;
+  });
+  localStorage.setItem(storageKey, JSON.stringify(data));
+  updateProgress();
+}
+
+function updateProgress() {
+  let filled = 0;
+  questions.forEach((_, i) => {
+    const el = document.getElementById("a-"+i);
+    if (el && el.value.trim()) filled++;
+  });
+  document.getElementById("progress").textContent = `작성한 문제: ${filled} / ${questions.length}`;
+}
+
+function gradeOne(i) {
+  const q = questions[i];
+  const input = document.getElementById("a-"+i);
+  const card = document.getElementById("card-"+i);
+  const fb = document.getElementById("fb-"+i);
+  const ok = q.accepted.some(a => norm(a) === norm(input.value));
+  card.classList.remove("correct","wrong");
+  card.classList.add(ok ? "correct" : "wrong");
+  fb.textContent = ok ? "✓ 맞았어요." : "✗ 대표 정답: " + q.answer;
+  return ok;
+}
+
+function gradeAll() {
+  let score = 0;
+  questions.forEach((_, i) => { if (gradeOne(i)) score++; });
+  document.getElementById("score").textContent = `${score} / ${questions.length}`;
+  saveProgress();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function showAnswers() {
+  questions.forEach((q, i) => {
+    document.getElementById("a-"+i).value = q.answer;
+    const card = document.getElementById("card-"+i);
+    card.classList.remove("wrong");
+    card.classList.add("correct");
+    document.getElementById("fb-"+i).textContent = "대표 정답: " + q.answer;
+  });
+  document.getElementById("score").textContent = "";
+  saveProgress();
+}
+
+function resetAll() {
+  if (!confirm("작성한 답을 모두 지우고 다시 풀까요?")) return;
+  localStorage.removeItem(storageKey);
+  document.getElementById("score").textContent = "";
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
