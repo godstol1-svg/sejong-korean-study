@@ -10,7 +10,44 @@ function timerHTML(min,id){return `<span class="timer" id="${id}t">${String(min)
 function setVal(k,v){state[k]=v;save()}
 function renderWrite(){let h=`<div class="sectiontitle"><h2>PHẦN THI VIẾT · 5 Câu</h2><div>${timerHTML(30,'w')}</div></div><p class="vi">Câu 1~4: điền từ thích hợp. Câu 5: viết 40~60 chữ.</p>`;DATA.writing.forEach((x,i)=>{if(i<4)h+=`<div class="card"><div class="qno">Câu ${i+1}</div><div class="q">${esc(x[0])}</div><input class="input" value="${esc(state['w'+i]||'')}" oninput="setVal('w${i}',this.value)" placeholder="정답 입력"></div>`;else h+=`<div class="card"><div class="qno">Câu 5</div><div class="q">${esc(x[0])}</div><textarea oninput="setVal('w4',this.value);document.getElementById('wc').textContent=this.value.replace(/\s/g,'').length">${esc(state.w4||'')}</textarea><div class="write-count"><span id="wc">${(state.w4||'').replace(/\s/g,'').length}</span> / 40~60자</div></div>`});h+=`<div class="actions"><button class="btn primary" onclick="checkWrite()">Kiểm tra câu 1~4</button><button class="btn ghost" onclick="resetSec('w')">Làm lại</button></div><div id="wres"></div>`;document.getElementById('write').innerHTML=h}
 function checkWrite(){let n=0;DATA.writing.slice(0,4).forEach((x,i)=>{let a=(state['w'+i]||'').replace(/\s/g,'');let b=x[1].replace(/\s/g,'');if(a===b)n++});document.getElementById('wres').innerHTML=`<div class="result">1~4번: ${n} / 4<br>Đáp án: ${DATA.writing.slice(0,4).map((x,i)=>i+1+'. '+x[1]).join(' · ')}</div>`}
-function renderListen(){let h=`<div class="sectiontitle"><h2>PHẦN THI NGHE · 15 Câu</h2><div>${timerHTML(25,'l')}</div></div><p class="vi">1~3, 10~11: nghe và chọn hình. Các câu còn lại: nghe và chọn đáp án phù hợp.</p>`;DATA.listening.forEach((x,i)=>{let k='l'+i;h+=`<div class="card"><div class="qno">Câu ${i+1}</div><audio controls preload="none" src="${encodeURI(x.audio)}"></audio><div class="q">${esc(x.q)}</div>`;if(x.kind==='visual'){h+=`<div class="visuals">`+x.opts.map((o,j)=>`<button class="visual ${state[k]==j?'sel':''}" onclick="setVal('${k}',${j});renderListen()"><span>${o[0]}</span><small>Hình ${j+1}</small></button>`).join('')+`</div>`}else{h+=`<div class="choices">`+x.choices.map((o,j)=>`<label class="choice"><input type="radio" name="${k}" ${state[k]==j?'checked':''} onchange="setVal('${k}',${j})"><span>${j+1}. ${esc(o)}</span></label>`).join('')+`</div>`}h+=`</div>`});h+=`<div class="actions"><button class="btn primary" onclick="checkListen()">Chấm điểm nghe</button><button class="btn ghost" onclick="resetSec('l')">Làm lại</button></div><div id="lres"></div>`;document.getElementById('listen').innerHTML=h}
+function renderListen(){
+  let h=`<div class="sectiontitle"><h2>PHẦN THI NGHE · 15 Câu</h2><div>${timerHTML(25,'l')}</div></div>
+  <p class="vi">Mỗi file nghe chỉ phát một lần ở đầu nhóm câu hỏi. Hãy nghe một đoạn rồi trả lời tất cả câu hỏi bên dưới.<br>
+  같은 MP3는 한 번만 재생하고, 그 아래에 해당 문제들을 묶어서 풉니다.</p>`;
+
+  const groups=[];
+  DATA.listening.forEach((x,i)=>{
+    let g=groups.find(v=>v.audio===x.audio);
+    if(!g){g={audio:x.audio,items:[]};groups.push(g)}
+    g.items.push({x,i});
+  });
+
+  groups.forEach((g,gi)=>{
+    const nums=g.items.map(v=>v.i+1);
+    const range=nums.length===1?`Câu ${nums[0]}`:`Câu ${nums[0]}~${nums[nums.length-1]}`;
+    h+=`<div class="card">
+      <div class="qno">🎧 Nhóm nghe ${gi+1} · ${range}</div>
+      <div class="vi" style="margin:6px 0 10px">Nghe file này rồi trả lời ${g.items.length} câu hỏi bên dưới.</div>
+      <audio controls preload="none" src="${encodeURI(g.audio)}"></audio>`;
+
+    g.items.forEach(({x,i})=>{
+      let k='l'+i;
+      h+=`<div style="border-top:1px solid var(--line);padding-top:16px;margin-top:16px">
+        <div class="qno">Câu ${i+1}</div>
+        <div class="q">${esc(x.q)}</div>`;
+      if(x.kind==='visual'){
+        h+=`<div class="visuals">`+x.opts.map((o,j)=>`<button class="visual ${state[k]==j?'sel':''}" onclick="setVal('${k}',${j});renderListen()"><span>${o[0]}</span><small>Hình ${j+1}</small></button>`).join('')+`</div>`;
+      }else{
+        h+=`<div class="choices">`+x.choices.map((o,j)=>`<label class="choice"><input type="radio" name="${k}" ${state[k]==j?'checked':''} onchange="setVal('${k}',${j})"><span>${j+1}. ${esc(o)}</span></label>`).join('')+`</div>`;
+      }
+      h+=`</div>`;
+    });
+    h+=`</div>`;
+  });
+
+  h+=`<div class="actions"><button class="btn primary" onclick="checkListen()">Chấm điểm nghe</button><button class="btn ghost" onclick="resetSec('l')">Làm lại</button></div><div id="lres"></div>`;
+  document.getElementById('listen').innerHTML=h;
+}
 function checkListen(){let n=0;DATA.listening.forEach((x,i)=>{let ans=x.kind==='visual'?x.ans:x.answer;if(Number(state['l'+i])===ans)n++});document.getElementById('lres').innerHTML=`<div class="result">NGHE: ${n} / 15</div>`}
 function renderRead(){let h=`<div class="sectiontitle"><h2>PHẦN THI ĐỌC · 15 Câu</h2><div>${timerHTML(25,'r')}</div></div><p class="vi">1~3 điền chỗ trống · 4~6 chọn câu trả lời · 7~8 chọn chủ đề · 9~15 đọc đoạn văn và trả lời.</p>`;DATA.reading.forEach((x,i)=>{let k='r'+i;h+=`<div class="card"><div class="qno">Câu ${i+1}</div>${x.passage?`<div class="passage">${esc(x.passage)}</div>`:''}<div class="q">${esc(x.question)}</div><div class="choices">`+x.choices.map((o,j)=>`<label class="choice"><input type="radio" name="${k}" ${state[k]==j?'checked':''} onchange="setVal('${k}',${j})"><span>${j+1}. ${esc(o)}</span></label>`).join('')+`</div></div>`});h+=`<div class="actions"><button class="btn primary" onclick="checkRead()">Chấm điểm đọc</button><button class="btn ghost" onclick="resetSec('r')">Làm lại</button></div><div id="rres"></div>`;document.getElementById('read').innerHTML=h}
 function checkRead(){let n=0;DATA.reading.forEach((x,i)=>{if(Number(state['r'+i])===Number(x.answer))n++});document.getElementById('rres').innerHTML=`<div class="result">ĐỌC: ${n} / 15</div>`}
